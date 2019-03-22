@@ -94,8 +94,6 @@ defmodule Ueberauth.Strategy.Eventbrite do
   Stores the raw information (including the token) obtained from callback.
   """
   def extra(conn) do
-    user = conn.private.eventbrite_user
-
     %Extra{
       raw_info: %{
         token: conn.private.eventbrite_token,

@@ -12,7 +12,7 @@ defmodule Ueberauth.Strategy.Eventbrite.OAuth do
 
   @defaults [
     authorize_url: "https://www.eventbrite.com/oauth/authorize",
-    headers: [{"Content-Type", "application/x-www-form-urlencoded"}]
+    headers: [{"Content-Type", "application/x-www-form-urlencoded"}],
     site: "https://www.eventbriteapi.com",
     strategy: __MODULE__,
     token_url: "https://www.eventbrite.com/oauth/token",
