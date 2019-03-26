@@ -80,13 +80,14 @@ defmodule Ueberauth.Strategy.Eventbrite do
     email =
       user
       |> Access.get("emails")
-      |> List.first()
+      |> Enum.find(&(&1["primary"] == true))
       |> Access.get("email")
 
 
     %Info{
-      name: user["first_name"] || email,
+      email: email,
       image: user["image"],
+      name: user["first_name"] || email,
     }
   end
 
