@@ -107,12 +107,12 @@ defmodule Ueberauth.Strategy.Eventbrite do
     conn = put_private(conn, :eventbrite_token, token)
 
     case Ueberauth.Strategy.Eventbrite.OAuth.get(token, "/v3/users/me/?expand=image") do
-      { :ok, %OAuth2.Response{status_code: 401, body: _body } } ->
-        set_errors!(conn, [error("token", "unauthorized")])
       { :ok, %OAuth2.Response{ status_code: status_code, body: res } } when status_code in 200..399 ->
         put_private(conn, :eventbrite_user, res)
       { :error, %OAuth2.Error{ reason: reason } } ->
         set_errors!(conn, [error("OAuth2", reason)])
+      { :error, %OAuth2.Response{status_code: 401, body: _body } } ->
+        set_errors!(conn, [error("token", "unauthorized")])
     end
   end
 
