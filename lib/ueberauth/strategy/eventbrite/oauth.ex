@@ -72,11 +72,11 @@ defmodule Ueberauth.Strategy.Eventbrite.OAuth do
     |> OAuth2.Client.get(url, headers, opts)
   end
 
-  def get_token!(params \\ [], opts \\ []) do
+  def get_token(params \\ [], opts \\ []) do
     opts
     |> signed_client
     |> put_param("client_secret", client().client_secret)
-    |> OAuth2.Client.get_token!(params)
+    |> OAuth2.Client.get_token(params)
   end
 
   # Strategy Callbacks
