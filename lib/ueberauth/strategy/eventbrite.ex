@@ -29,14 +29,18 @@ defmodule Ueberauth.Strategy.Eventbrite do
   """
   def handle_callback!(%Plug.Conn{ params: %{ "code" => code } } = conn) do
     opts = [redirect_uri: callback_url(conn)]
-    client = Ueberauth.Strategy.Eventbrite.OAuth.get_token!([code: code], opts)
-    token = client.token
 
-    if token.access_token == nil do
-      set_errors!(conn, [error(token.other_params["error"], token.other_params["error_description"])])
-    else
-      # We need to reset the client in the token here because it has basic auth in the headers
-      fetch_user(conn, Map.put(token, :client, Ueberauth.Strategy.Eventbrite.OAuth.client))
+    case Ueberauth.Strategy.Eventbrite.OAuth.get_token([code: code], opts) do
+      {:ok, client} ->
+        token = client.token
+        if token.access_token == nil do
+          set_errors!(conn, [error(token.other_params["error"], token.other_params["error_description"])])
+        else
+          # We need to reset the client in the token here because it has basic auth in the headers
+          fetch_user(conn, Map.put(token, :client, Ueberauth.Strategy.Eventbrite.OAuth.client))
+        end
+      {:error, error} ->
+        set_errors!(conn, [error(error.body["error"], error.body["error_description"])])
     end
   end
 
