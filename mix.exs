@@ -1,7 +1,7 @@
 defmodule UeberauthEventbrite.Mixfile do
   use Mix.Project
 
-  @version "0.0.3"
+  @version "0.0.4"
   @url "https://github.com/vinniefranco/ueberauth_eventbrite"
 
   def project do
